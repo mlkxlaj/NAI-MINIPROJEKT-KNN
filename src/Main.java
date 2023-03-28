@@ -5,7 +5,8 @@ import java.util.*;
 public class Main {
     static HashSet<String> typesHash = new HashSet<>();
     static int k;
-    static int trueTimes = 0;
+    static double trueTimes = 0;
+    static double dlugosc = 0;
     public static void main(String[] args) throws IOException {
 
         int droga = 0;
@@ -21,17 +22,18 @@ public class Main {
         System.out.println("Wybierz 1 jezeli chcesz wpisac recznie dane lub 2 jezeli dane beda pobierane z pliku");
         String output = console.nextLine();
 
+
         while (whileBool) {
             if (output.equals("2") && droga == 0) {
                 scanner = new Scanner(new File("data/iris.test.data"));
                 fileToList(scanner, testingPoints);
-
                 droga = 1;
             } else {
                 System.out.println("Wpisuj linie danych po przecinku");
                 output = console.nextLine();
                 string.add(output);
                 listToPointsList(testingPoints, string);
+
             }
 
             String[] typesString = new String[typesHash.size()];
@@ -59,17 +61,21 @@ public class Main {
                 }
                 findDominatingCat(typesString, typesCount, testingPoints.get(i));
             }
-            System.out.println("procentowa poprawnosc " + (double) (trueTimes / testingPoints.size()));
-            if(droga == 1){
+
+            System.out.println((double) (trueTimes / dlugosc));
+
+
+
+            if (droga == 1) {
                 whileBool = false;
             } else {
                 System.out.println("chcesz powtorzyc akcje 1 - tak 2 - nie ?");
-                if( console.nextLine().equals("2")){
+                if (console.nextLine().equals("2")) {
                     whileBool = false;
                 } else {
                     testingPoints.clear();
                     string.clear();
-                    trueTimes = 0;
+
                 }
             }
         }
@@ -78,7 +84,7 @@ public class Main {
     private static void fileToList(Scanner scanner, List<Point> points) {
         for (int i = 0; scanner.hasNextLine(); i++) {
             String[] splited = scanner.nextLine().split(",");
-            typesHash.add(splited[splited.length-1]);
+            typesHash.add(splited[splited.length - 1]);
             List<Double> data = new ArrayList<>();
             for (int j = 0; j < splited.length - 1; j++) {
                 data.add(Double.parseDouble(splited[j]));
@@ -87,19 +93,20 @@ public class Main {
         }
     }
 
-    private static void listToPointsList(List<Point> points, List<String> strings){
+    private static void listToPointsList(List<Point> points, List<String> strings) {
         for (int i = 0; i < strings.size(); i++) {
-            String[] splited =  strings.get(i).split(",");
+            String[] splited = strings.get(i).split(",");
             List<Double> data = new ArrayList<>();
-            for (int j = 0; j < splited.length-1; j++) {
+            for (int j = 0; j < splited.length - 1; j++) {
                 data.add(Double.parseDouble(splited[j]));
             }
-            points.add(new Point(data,splited[splited.length-1]));
+            points.add(new Point(data, splited[splited.length - 1]));
         }
     }
 
     public static double calcDistance(Point point, Point testingPoint) {
         double tosqrt = 0;
+
         if (point.getList().size() == testingPoint.getList().size()) {
             for (int i = 0; i < point.getList().size(); i++) {
                 tosqrt += Math.pow(point.getList().get(i) - testingPoint.getList().get(i), 2);
@@ -110,7 +117,6 @@ public class Main {
     }
 
     public static void bubbleSort(List<Distance> distances) {
-
         int n = distances.size();
         for (int i = 0; i < n - 1; i++)
             for (int j = 0; j < n - i - 1; j++)
@@ -121,16 +127,17 @@ public class Main {
                 }
     }
 
-    public static void findDominatingCat(String[] strings, int[] ints, Point point){
+    public static void findDominatingCat(String[] strings, int[] ints, Point point) {
         int max = 0;
         String value = "";
         for (int i = 0; i < ints.length; i++) {
-            if(ints[i] >= max){
+            if (ints[i] > max) {
                 max = ints[i];
                 value = strings[i];
             }
         }
-        if(point.getType().equals(value)){
+        dlugosc++;
+        if (point.getType().equals(value)) {
             System.out.println(Arrays.toString(point.getList().toArray()) + " " + point.getType() + " " + "true");
             trueTimes++;
         } else {
