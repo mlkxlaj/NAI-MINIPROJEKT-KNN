@@ -1,3 +1,5 @@
+package KNN;
+
 import java.util.List;
 
 public class Point {
@@ -36,7 +38,7 @@ public class Point {
 
     @Override
     public String toString() {
-        return "Point{" +
+        return "KNN2.Point{" +
                 "list=" + list +
                 ", type='" + type + '\'' +
                 '}';

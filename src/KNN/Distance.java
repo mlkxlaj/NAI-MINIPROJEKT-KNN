@@ -1,8 +1,10 @@
+package KNN;
+
 public class Distance {
     Point original;
     double data;
 
-    public Distance(Point original,  double data) {
+    public Distance(Point original, double data) {
         this.original = original;
         this.data = data;
     }
